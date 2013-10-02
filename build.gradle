@@ -1,0 +1,47 @@
+apply plugin: 'groovy'
+apply plugin: 'scala'
+apply plugin: 'application'
+
+import org.apache.tools.ant.filters.FixCrLfFilter
+import org.apache.tools.ant.filters.ReplaceTokens
+
+repositories {
+    mavenCentral()
+}
+
+mainClassName = "com.jellyfish85.patchRelease.facade.PatchReleaseFacade"
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.1.5'
+
+    compile 'org.scala-lang:scala-compiler:2.9.2'
+
+    compile 'org.scala-lang:scala-library:2.9.2'
+}
+
+
+run {
+    // dynamic arguments (from "-Prunargs=..." on gradle command line)
+    if (project.hasProperty('runargs')) {
+        args project.runargs.split(',')
+    }
+}
+
+/*
+task execGroovy (type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "example.Script"
+}
+
+
+task execScala (type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.jellyfish85.patchRelease.executor.PatchReleaseFacade"
+}
+
+task replaceStr (type: Copy) {
+    from 'src/main/resources'
+    into 'build'
+    filter(ReplaceTokens, tokens: [aaa: "AAA"])
+}
+*/
