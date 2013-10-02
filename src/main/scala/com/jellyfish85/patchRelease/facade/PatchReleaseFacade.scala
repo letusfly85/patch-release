@@ -1,4 +1,4 @@
-package com.jellyfish85.patchRelease.executor
+package com.jellyfish85.patchRelease.facade
 
 import com.jellyfish85.patchRelease.utils.ApplicationPropertiesUtils
 
