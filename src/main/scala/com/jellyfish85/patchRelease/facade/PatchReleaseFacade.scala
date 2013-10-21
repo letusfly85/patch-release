@@ -1,12 +1,12 @@
 package com.jellyfish85.patchRelease.facade
 
-import com.jellyfish85.patchRelease.utils.ApplicationPropertiesUtils
+import com.jellyfish85.patchRelease.utils.ApplicationProperties
 
 object PatchReleaseFacade {
 
   def main(args: Array[String]) {
 
-    val properties: Map[String, String] = ApplicationPropertiesUtils.applicationProperties
+    val properties: Map[String, String] = ApplicationProperties.applicationProperties
 
     val className: String = args(0)
     val obj = Class.forName(className).newInstance().asInstanceOf[{
