@@ -34,6 +34,8 @@ dependencies {
     //compile 'com.jellyfish85:dbaccessor:1.0-SNAPSHOT'
     compile files('lib/dbaccessor.jar')
 
+    compile files('lib/svnaccessor.jar')
+
     runtime files('lib/classes12.jar')
 }
 
