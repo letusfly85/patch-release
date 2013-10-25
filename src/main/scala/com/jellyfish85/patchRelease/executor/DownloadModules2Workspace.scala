@@ -1,10 +1,16 @@
 package com.jellyfish85.patchRelease.executor
 
-import com.jellyfish85.dbaccessor.dao.erd.mainte.tool.MsTablesDao
-import com.jellyfish85.dbaccessor.bean.erd.mainte.tool.MsTablesBean
 import com.jellyfish85.dbaccessor.manager.DatabaseManager
 
 import java.math.BigDecimal
+import com.jellyfish85.dbaccessor.dao.src.mainte.tool.VChangesetsDao
+import com.jellyfish85.dbaccessor.bean.src.mainte.tool.VChangesetsBean
+import com.jellyfish85.svnaccessor.getter.SVNGetFiles
+import com.jellyfish85.patchRelease.converter.VChangeSetsBean2SVNRequestBeanConv
+import com.jellyfish85.svnaccessor.bean.SVNRequestBean
+import java.io.File
+import org.apache.commons.io.FileUtils
+import com.jellyfish85.patchRelease.utils.ApplicationProperties
 
 class DownloadModules2Workspace extends AbstractPatchReleaseController {
 
@@ -13,20 +19,26 @@ class DownloadModules2Workspace extends AbstractPatchReleaseController {
   def run(args: Array[String]) {
 
     if (args.isEmpty) {
-      //TODO error message
-      new RuntimeException("TODO")
+      new RuntimeException("arguments have to have a classname and its arguments.")
     }
     db.connect
 
     val ticketNumber: BigDecimal = new BigDecimal(args(0))
 
-    val dao: MsTablesDao = new MsTablesDao
-    val bean: MsTablesBean = new MsTablesBean
-    bean.physicalTableNameAttr.value = "T_KK_KOKYK_KHN"
-    val list: List[MsTablesBean] = dao.find(db.conn, bean)
+    val dao: VChangesetsDao = new VChangesetsDao
+    val changesets: List[VChangesetsBean] = dao.findByTicketNumber(db.conn, ticketNumber)
+    changesets.foreach {bean: VChangesetsBean =>
+      println(bean.pathAttr.value)
+    }
 
-    println(list.head.physicalTableNameAttr.value)
+    val converter: VChangeSetsBean2SVNRequestBeanConv = new VChangeSetsBean2SVNRequestBeanConv
+    val list: List[SVNRequestBean] = converter.convert(changesets)
+    val getter: SVNGetFiles = new SVNGetFiles
+
+    val workspace: File = new File(ApplicationProperties.workspace)
+
+    FileUtils.forceMkdir(workspace)
+    getter.simpleGetFilesWithDirectory(list, workspace)
 
   }
-
 }
