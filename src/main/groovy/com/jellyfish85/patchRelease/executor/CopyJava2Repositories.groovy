@@ -41,7 +41,6 @@ class CopyJava2Repositories  {
 
 
         def app = ApplicationProperties$.newInstance()
-
         def buildHome = new File(app.getBuildHome())
         if (!buildHome.exists()) {
             FileUtils.forceMkdir(buildHome)
