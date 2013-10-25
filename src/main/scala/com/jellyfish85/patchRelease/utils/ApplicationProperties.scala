@@ -6,6 +6,8 @@ object ApplicationProperties {
 
   val properties: Properties = new Properties()
 
+  var _buildHome: String = _
+
   def init = properties.load(getClass().getResourceAsStream("/workspace.properties"))
 
 
@@ -32,6 +34,22 @@ object ApplicationProperties {
   val jobHome: String = {
     init
     properties.getProperty("jobHome")
+  }
+
+  val buildHome: String = {
+    init
+    _buildHome = properties.getProperty("buildHome")
+    _buildHome
+  }
+  def getBuildHome: String = {
+    buildHome
+
+    _buildHome
+  }
+
+  val appPrefix: String = {
+    init
+    properties.getProperty("appPrefix")
   }
 
 }
