@@ -33,12 +33,15 @@ dependencies {
 
     //compile 'com.jellyfish85:dbaccessor:1.0-SNAPSHOT'
     compile files('lib/dbaccessor.jar')
+
+    runtime files('lib/classes12.jar')
 }
 
 run {
     // dynamic arguments (from "-Prunargs=..." on gradle command line)
     if (project.hasProperty('runargs')) {
         args project.runargs.split(',')
+        println(args)
     }
 }
 

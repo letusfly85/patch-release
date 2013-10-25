@@ -9,7 +9,7 @@ object PatchReleaseFacade {
       def run(args: Array[String])
     }]
 
-    if (args.length > 2) {
+    if (args.length >= 2) {
       obj.run(args.tail)
 
     } else {
