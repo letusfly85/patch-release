@@ -1,7 +1,7 @@
 package com.jellyfish85.patchRelease.executor
 
 import com.jellyfish85.patchRelease.utils.ApplicationProperties
-
+import com.jellyfish85.patchRelease.utils.SimplePomFilter
 import com.jellyfish85.svnaccessor.bean.SVNRequestBean
 import com.jellyfish85.svnaccessor.getter.SVNGetFiles
 import com.jellyfish85.svnaccessor.manager.SVNManager
@@ -26,9 +26,14 @@ class DownloadFullSetsByReleaseTag {
 
         bean.setPath(app.releaseTag() + app.appPrefix())
 
-        def filter = new SimpleJavaFilter()
         def getter = new SVNGetFiles()
+
+        // get pom.xml files
+        getter.simpleGetFilesRecursive(repository, buildHome.getParent(),
+                bean.path(), 0, (new SimplePomFilter()))
+
+        // get java files
         getter.simpleGetFilesRecursive(repository, buildHome.getPath(),
-                bean.path(), 0, filter)
+                bean.path(), 1, new SimpleJavaFilter())
     }
 }
