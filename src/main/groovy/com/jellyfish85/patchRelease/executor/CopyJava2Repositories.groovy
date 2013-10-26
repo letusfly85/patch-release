@@ -5,6 +5,7 @@ import com.jellyfish85.dbaccessor.dao.src.mainte.tool.VChangesetsDao
 import com.jellyfish85.dbaccessor.manager.DatabaseManager
 
 import com.jellyfish85.patchRelease.utils.ApplicationProperties
+import com.jellyfish85.patchRelease.utils.GetProjectName
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 
@@ -48,10 +49,14 @@ class CopyJava2Repositories  {
         javaList.each {VChangesetsBean v ->
             println("copying...." + v.pathAttr().value())
 
-            def relativePath = v.pathAttr().value().replace(app.appPrefix(), "")
+            def header = app.trunk() + app.appPrefix()
+
             def src  = new File(app.workspace(), v.pathAttr().value())
-            def dist = new File(app.getBuildHome(), relativePath)
+            def dist = new File(app.getBuildHome(), v.pathAttr().value().replace(header, ""))
             FileUtils.copyFile(src, dist)
         }
+
+        def getter = new GetProjectName()
+        getter.getter(javaList)
     }
 }

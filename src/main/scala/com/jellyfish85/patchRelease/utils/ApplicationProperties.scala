@@ -68,4 +68,13 @@ object ApplicationProperties {
     properties.getProperty("appPrefix")
   }
 
+  val input: String = {
+    init
+    properties.getProperty("input")
+  }
+
+  val buildTargets: String = {
+    init
+    properties.getProperty("buildTargets")
+  }
 }
