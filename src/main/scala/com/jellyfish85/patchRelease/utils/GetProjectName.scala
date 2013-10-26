@@ -21,11 +21,11 @@ class GetProjectName {
       val bean: VChangesetsBean = javaList.get(i)
       val list = bean.pathAttr.value.split("/")
 
-      val fourth = list(4)
       val fifth  = list(5)
+      val sixth  = list(6)
 
-      fourth match {
-        case "BL"=> projectNameList ::= fifth
+      fifth match {
+        case "BL"=> projectNameList ::= sixth
         case _   => projectNameList ::= fifth
       }
     }
