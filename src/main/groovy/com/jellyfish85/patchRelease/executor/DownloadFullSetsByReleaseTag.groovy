@@ -30,7 +30,7 @@ class DownloadFullSetsByReleaseTag {
 
         // get pom.xml files
         def filter00 = new SimplePomFilter()
-        getter.simpleGetFilesRecursive(repository, buildHome.getParent(),
+        getter.simpleGetFilesRecursive(repository, buildHome.getPath(),
                 bean.path(), 0, filter00)
 
         // get java files
