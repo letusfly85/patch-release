@@ -47,7 +47,6 @@ run {
     }
 }
 
-
 task copyJava (type: JavaExec) {
         classpath = sourceSets.main.runtimeClasspath
         main = "com.jellyfish85.patchRelease.executor.CopyJava2Repositories"
