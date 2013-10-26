@@ -3,7 +3,15 @@
 PARENT_PATH=`pwd`
 echo $PARENT_PATH
 
-cd $PARENT_PATH/buildHome/"$1"
-mvn compile package
+INPUT_DIR=$PARENT_PATH/input
+if [ -f target ]; then
 
-cd $PARENT_PATH
+    cat target | while readline appHome
+    do
+        echo $appHome
+        cd $PARENT_PATH/buildHome/$appHome
+        mvn compile package
+    done
+
+    cd $PARENT_PATH
+fi
