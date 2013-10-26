@@ -29,11 +29,13 @@ class DownloadFullSetsByReleaseTag {
         def getter = new SVNGetFiles()
 
         // get pom.xml files
+        def filter00 = new SimplePomFilter()
         getter.simpleGetFilesRecursive(repository, buildHome.getParent(),
-                bean.path(), 0, (new SimplePomFilter()))
+                bean.path(), 0, filter00)
 
         // get java files
+        def filter01 = new SimpleJavaFilter()
         getter.simpleGetFilesRecursive(repository, buildHome.getPath(),
-                bean.path(), 1, new SimpleJavaFilter())
+                bean.path(), 1, filter01)
     }
 }
