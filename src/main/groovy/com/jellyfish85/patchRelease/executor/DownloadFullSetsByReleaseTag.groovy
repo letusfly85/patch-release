@@ -16,7 +16,7 @@ class DownloadFullSetsByReleaseTag {
         def app = new ApplicationProperties()
         def buildHome = new File(app.buildHome)
 
-        FileUtils.forceDelete(buildHome)
+        buildHome.deleteOnExit()
         FileUtils.forceMkdir(buildHome)
 
         def svn = new SVNManager()
