@@ -47,6 +47,16 @@ object ApplicationProperties {
     _buildHome
   }
 
+  val trunk: String = {
+    init
+    properties.getProperty("trunk")
+  }
+
+  val releaseTag: String = {
+    init
+    properties.getProperty("releaseTag")
+  }
+
   val appPrefix: String = {
     init
     properties.getProperty("appPrefix")

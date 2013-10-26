@@ -53,6 +53,11 @@ task copyJava (type: JavaExec) {
         args = project.runargs.split(',').toList()
 }
 
+task copyRepository (type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.jellyfish85.patchRelease.executor.DownloadFullSetsByReleaseTag"
+    args = project.runargs.split(',').toList()
+}
 
 /*
 task execScala (type: JavaExec) {

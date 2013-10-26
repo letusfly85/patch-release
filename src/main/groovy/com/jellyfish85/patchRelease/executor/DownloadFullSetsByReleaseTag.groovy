@@ -1,10 +1,10 @@
 package com.jellyfish85.patchRelease.executor
 
 import com.jellyfish85.patchRelease.utils.ApplicationProperties$
+import com.jellyfish85.svnaccessor.bean.SVNRequestBean
 import com.jellyfish85.svnaccessor.getter.SVNGetFiles
 import com.jellyfish85.svnaccessor.manager.SVNManager
 import org.apache.commons.io.FileUtils
-import org.apache.commons.io.FilenameUtils
 
 class DownloadFullSetsByReleaseTag {
 
@@ -17,11 +17,14 @@ class DownloadFullSetsByReleaseTag {
         FileUtils.forceMkdir(buildHome)
 
         def svn = new SVNManager()
-        //def repository = svn
+        def repository = svn.repository()
+
+        def bean = new SVNRequestBean()
+
+        bean.setPath(app.releaseTag() + app.appPrefix())
 
         def getter = new SVNGetFiles()
-        //getter.simpleGetFilesRecursive()
+        getter.simpleGetFilesRecursive(repository, buildHome.getPath(), bean.path(), 0, true)
 
     }
-
 }
