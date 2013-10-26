@@ -25,7 +25,7 @@ class GetProjectName {
       val sixth  = list(6)
 
       fifth match {
-        case "BL"=> projectNameList ::= sixth
+        case "BL"=> projectNameList ::= (fifth + "/" + sixth)
         case _   => projectNameList ::= fifth
       }
     }
