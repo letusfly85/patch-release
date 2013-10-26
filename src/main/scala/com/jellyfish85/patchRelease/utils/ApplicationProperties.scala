@@ -2,6 +2,12 @@ package com.jellyfish85.patchRelease.utils
 
 import java.util.Properties
 
+class ApplicationProperties {
+  val app = ApplicationProperties
+
+  val getBuildHome: String = app.getBuildHome
+}
+
 object ApplicationProperties {
 
   val properties: Properties = new Properties()

@@ -4,7 +4,7 @@ import com.jellyfish85.dbaccessor.bean.src.mainte.tool.VChangesetsBean
 import com.jellyfish85.dbaccessor.dao.src.mainte.tool.VChangesetsDao
 import com.jellyfish85.dbaccessor.manager.DatabaseManager
 
-import com.jellyfish85.patchRelease.utils.ApplicationProperties$
+import com.jellyfish85.patchRelease.utils.ApplicationProperties
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 
@@ -40,7 +40,7 @@ class CopyJava2Repositories  {
             FilenameUtils.getExtension(v.fileNameAttr().value()) == "java"}
 
 
-        def app = ApplicationProperties$.newInstance()
+        def app = new ApplicationProperties()
         def buildHome = new File(app.getBuildHome())
         if (!buildHome.exists()) {
             FileUtils.forceMkdir(buildHome)
