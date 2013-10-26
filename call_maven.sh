@@ -4,7 +4,7 @@ PARENT_PATH=`pwd`
 echo $PARENT_PATH
 
 INPUT_DIR=$PARENT_PATH/input
-if [ -f target ]; then
+if [ -f $INPUT_DIR/buildTargets ]; then
 
     cat target | while readline appHome
     do
