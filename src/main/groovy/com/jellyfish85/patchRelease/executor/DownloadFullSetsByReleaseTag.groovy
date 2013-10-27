@@ -29,23 +29,23 @@ class DownloadFullSetsByReleaseTag {
             FileUtils.cleanDirectory(buildHome)
         }
 
-        //def svn = new SVNManager()
-        //def repository = svn.repository()
+        def svn = new SVNManager()
+        def repository = svn.repository()
         def filter = new SimpleJavaFilter()
-        // get pom.xml files
+
         def list = pjNmGetter.rootNames
         list.each {String projectName ->
             def bean0 = new SVNRequestBean()
 
-            //def projectName = "/BL/BL_KK"
             bean0.setPath(app.releaseTag() + app.appPrefix() + projectName + "/pom.xml")
             bean0.setFileName("pom.xml")
 
             def removePath = app.releaseTag() + app.appPrefix()
             getter.simpleGetFile(bean0, buildHome, removePath)
 
-            //bean0.setPath(app.releaseTag() + app.appPrefix() + projectName)
-            //getter.simpleGetFilesRecursiveWithRemovePath(repository, buildHome.path, bean0.path(),1.toInteger(), filter,  "/JYB/tags/JT_RELEASE/src/APP")
+            bean0.setPath(app.releaseTag() + app.appPrefix() + projectName)
+            getter.simpleGetFilesRecursiveWithRemovePath(repository, buildHome.path,
+                    bean0.path(), 1.toInteger(), filter, removePath)
         }
     }
 }
