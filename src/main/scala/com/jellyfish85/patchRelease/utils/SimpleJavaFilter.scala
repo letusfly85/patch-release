@@ -9,6 +9,8 @@ class SimpleJavaFilter extends SVNFilter {
     def filter(bean: SVNRequestBean): Boolean = {
 
       print(bean.path + "\t")
+      print(FilenameUtils.getExtension(bean.fileName) == "java" + "\t")
+      print(bean.path.matches("src/main/java"))
       if ((
             FilenameUtils.getExtension(bean.fileName) == "java" &&
             bean.path.matches("src/main/java")
