@@ -5,9 +5,7 @@ import com.jellyfish85.patchRelease.utils.GetProjectName
 import com.jellyfish85.patchRelease.utils.SimpleJavaFilter
 import com.jellyfish85.svnaccessor.bean.SVNRequestBean
 import com.jellyfish85.svnaccessor.getter.SVNGetFiles
-import com.jellyfish85.svnaccessor.manager.SVNManager
 import org.apache.commons.io.FileUtils
-import org.tmatesoft.svn.core.io.SVNRepository
 
 class DownloadFullSetsByReleaseTag {
 

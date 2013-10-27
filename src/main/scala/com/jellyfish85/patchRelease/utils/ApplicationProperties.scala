@@ -77,4 +77,25 @@ object ApplicationProperties {
     init
     properties.getProperty("buildTargets")
   }
+
+  val blBasePath: String = {
+    init
+    properties.getProperty("blBasePath")
+  }
+
+  val blHead: String = {
+    init
+    properties.getProperty("blHead")
+  }
+
+  val clWebHome: String = {
+    init
+    properties.getProperty("clWebHome")
+  }
+
+  val jobEnvHome: String = {
+    init
+    properties.getProperty("jobEnvHome")
+  }
+
 }
