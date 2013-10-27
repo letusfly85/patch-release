@@ -9,7 +9,12 @@ class SimpleJavaFilter extends SVNFilter {
     def filter(bean: SVNRequestBean): Boolean = {
 
 
-      if (FilenameUtils.getExtension(bean.fileName) == "java" || bean.fileName == "pom.xml") {
+      if ((
+            FilenameUtils.getExtension(bean.fileName) == "java" &&
+            bean.path.matches("src/main/java")
+          ) ||
+          bean.fileName == "pom.xml"
+        ) {
           true
 
       } else {
