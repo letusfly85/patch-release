@@ -49,7 +49,7 @@ class DownloadFullSetsByReleaseTag {
                     repository,
                     buildHome.path,
                     bean0.path(),
-                    1.toInteger(),
+                    1,
                     filter,
                     removePath
             )
