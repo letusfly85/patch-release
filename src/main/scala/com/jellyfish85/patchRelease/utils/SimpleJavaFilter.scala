@@ -8,22 +8,20 @@ class SimpleJavaFilter extends SVNFilter {
 
     def filter(bean: SVNRequestBean): Boolean = {
 
-      /*
-      print(bean.path + "\t")
-      print((FilenameUtils.getExtension(bean.fileName) == "java") + "\t")
-      print(bean.path.matches(".*src/main/java.*") + "\t")
-      */
-      if ((
+      if (
+          (
             (FilenameUtils.getExtension(bean.fileName) == "java") &&
-              (bean.path.matches(".*src/main/java.*"))
-          ) ||
-          bean.fileName == "pom.xml"
+            (bean.path.matches(".*src/main/java.*"))
+          )                          ||
+          bean.fileName == "pom.xml" ||
+          (
+              (bean.path.matches(".*src/main/filters.*")) ||
+              (bean.path.matches(".*src/main/config.*"))
+          )
         ) {
-          println("true")
           true
 
       } else {
-        println("false")
          false
       }
     }
