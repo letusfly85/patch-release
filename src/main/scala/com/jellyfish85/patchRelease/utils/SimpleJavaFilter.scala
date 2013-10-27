@@ -10,10 +10,10 @@ class SimpleJavaFilter extends SVNFilter {
 
       print(bean.path + "\t")
       print((FilenameUtils.getExtension(bean.fileName) == "java") + "\t")
-      print(bean.path.matches("src/main/java"))
+      print(bean.path.matches("*src/main/java*") + "\t")
       if ((
             (FilenameUtils.getExtension(bean.fileName) == "java") &&
-              (bean.path.matches("src/main/java"))
+              (bean.path.matches("*src/main/java*"))
           ) ||
           bean.fileName == "pom.xml"
         ) {
