@@ -45,8 +45,14 @@ class DownloadFullSetsByReleaseTag {
             getter.simpleGetFile(bean0, buildHome, removePath)
 
             bean0.setPath(app.releaseTag() + app.appPrefix() + projectName)
-            getter.simpleGetFilesRecursiveWithRemovePath(repository, buildHome.path,
-                    bean0.path(), 1.toInteger(), filter, removePath)
+            getter.simpleGetFilesRecursiveWithRemovePath(
+                    repository,
+                    buildHome.path,
+                    bean0.path(),
+                    1.toInteger(),
+                    filter,
+                    removePath
+            )
         }
     }
 }
