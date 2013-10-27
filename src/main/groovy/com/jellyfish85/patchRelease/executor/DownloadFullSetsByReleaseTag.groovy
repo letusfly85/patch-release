@@ -30,8 +30,6 @@ class DownloadFullSetsByReleaseTag {
             FileUtils.cleanDirectory(buildHome)
         }
 
-        def svn = new SVNManager()
-        SVNRepository repository = svn.repository()
         SimpleJavaFilter filter = new SimpleJavaFilter()
 
         def removePath = app.releaseTag() + app.appPrefix()
