@@ -98,4 +98,9 @@ object ApplicationProperties {
     properties.getProperty("jobEnvHome")
   }
 
+  val releaseHome: String = {
+    init
+    properties.getProperty("releaseHome")
+  }
+
 }

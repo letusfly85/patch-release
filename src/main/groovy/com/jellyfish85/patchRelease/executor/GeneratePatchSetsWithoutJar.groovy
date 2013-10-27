@@ -4,6 +4,7 @@ import com.jellyfish85.dbaccessor.bean.src.mainte.tool.VChangesetsBean
 import com.jellyfish85.dbaccessor.dao.src.mainte.tool.VChangesetsDao
 import com.jellyfish85.dbaccessor.manager.DatabaseManager
 import com.jellyfish85.patchRelease.utils.ApplicationProperties
+import com.jellyfish85.patchRelease.utils.GenerateReleaseHome
 import org.apache.commons.io.FilenameUtils
 
 class GeneratePatchSetsWithoutJar {
@@ -14,12 +15,14 @@ class GeneratePatchSetsWithoutJar {
 
         def db = new DatabaseManager()
         db.connect()
-
         def dao = new VChangesetsDao()
         def list = dao.findByTicketNumber(db.conn(), ticketNumber)
 
-        def app = new ApplicationProperties()
+        // generate directory for release
+        def directoryGenerator = new GenerateReleaseHome()
+        directoryGenerator.setup()
 
+        def app = new ApplicationProperties()
         def sourceList = dao.convert(list).findAll {VChangesetsBean v ->
             (
                 FilenameUtils.getExtension(v.fileNameAttr().value()) != "java"
@@ -27,6 +30,8 @@ class GeneratePatchSetsWithoutJar {
                 v.fileNameAttr().value().matches(".*" + app.appPrefix() + ".*")
             )
         }
+
+        attachSources(sourceList)
     }
 
     def attachSources(ArrayList<VChangesetsBean> list) {
@@ -35,6 +40,7 @@ class GeneratePatchSetsWithoutJar {
         def blList = list.findAll {VChangesetsBean v ->
             v.fileNameAttr().value().matches(".*" + app.blHead() + ".*")
         }
+        attachBLSources(blList)
 
         def clWebList = list.findAll {VChangesetsBean v ->
             v.fileNameAttr().value().matches(".*" + app.clWebHome() + ".*")
@@ -51,22 +57,23 @@ class GeneratePatchSetsWithoutJar {
      * @todo
      * @param bean
      */
-    def attachBLSources(VChangesetsBean bean) {
+    def attachBLSources(ArrayList<VChangesetsBean> list) {
 
-        def ext = FilenameUtils.getExtension(bean.pathAttr().value())
-        switch (ext) {
-            case "bl":
-                //TODO
-                assert 1 == 1;
+        list.each {VChangesetsBean bean ->
+            def ext = FilenameUtils.getExtension(bean.pathAttr().value())
+            switch (ext) {
+                case "bl":
+                    //TODO
+                    assert 1 == 1;
 
-            case "xql":
-                //TODO
-                assert 1 == 1;
+                case "xql":
+                    //TODO
+                    assert 1 == 1;
 
-            case "xls":
-                //TODO
-                assert 1 == 1;
-
+                case "xls":
+                    //TODO
+                    assert 1 == 1;
+            }
         }
     }
 
