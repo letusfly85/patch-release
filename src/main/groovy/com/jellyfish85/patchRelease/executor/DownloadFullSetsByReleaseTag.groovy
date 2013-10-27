@@ -1,12 +1,11 @@
 package com.jellyfish85.patchRelease.executor
 
 import com.jellyfish85.patchRelease.utils.ApplicationProperties
-import com.jellyfish85.patchRelease.utils.SimplePomFilter
+import com.jellyfish85.patchRelease.utils.GetProjectName
+import com.jellyfish85.patchRelease.utils.SimpleJavaFilter
 import com.jellyfish85.svnaccessor.bean.SVNRequestBean
 import com.jellyfish85.svnaccessor.getter.SVNGetFiles
 import com.jellyfish85.svnaccessor.manager.SVNManager
-import com.jellyfish85.patchRelease.utils.SimpleJavaFilter
-
 import org.apache.commons.io.FileUtils
 
 class DownloadFullSetsByReleaseTag {
@@ -19,23 +18,33 @@ class DownloadFullSetsByReleaseTag {
         buildHome.deleteOnExit()
         FileUtils.forceMkdir(buildHome)
 
-        def svn = new SVNManager()
-        def repository   = svn.repository()
-
         def bean = new SVNRequestBean()
 
         bean.setPath(app.releaseTag() + app.appPrefix())
 
         def getter = new SVNGetFiles()
+        def pjNmGetter = new GetProjectName()
 
+        if (buildHome.exists()) {
+            FileUtils.cleanDirectory(buildHome)
+        }
+
+        //def svn = new SVNManager()
+        //def repository = svn.repository()
+        def filter = new SimpleJavaFilter()
         // get pom.xml files
-        def filter00 = new SimplePomFilter()
-        getter.simpleGetFilesRecursive(repository, buildHome.getPath(),
-                bean.path(), 0, filter00)
+        def list = pjNmGetter.rootNames
+        list.each {String projectName ->
+            def bean0 = new SVNRequestBean()
 
-        // get java files
-        def filter01 = new SimpleJavaFilter()
-        getter.simpleGetFilesRecursive(repository, buildHome.getPath(),
-                bean.path(), 1, filter01)
+            //def projectName = "/BL/BL_KK"
+            bean0.setPath(app.releaseTag() + app.appPrefix() + projectName + "/pom.xml")
+            bean0.setFileName("pom.xml")
+
+            getter.simpleGetFile(bean0, buildHome, "/JYB/tags/JT_RELEASE/src/APP")
+
+            //bean0.setPath(app.releaseTag() + app.appPrefix() + projectName)
+            //getter.simpleGetFilesRecursiveWithRemovePath(repository, buildHome.path, bean0.path(),1.toInteger(), filter,  "/JYB/tags/JT_RELEASE/src/APP")
+        }
     }
 }

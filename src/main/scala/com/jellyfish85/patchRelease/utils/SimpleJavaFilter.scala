@@ -7,11 +7,13 @@ import com.jellyfish85.svnaccessor.getter.SVNFilter
 class SimpleJavaFilter extends SVNFilter {
 
     def filter(bean: SVNRequestBean): Boolean = {
-        if (FilenameUtils.getExtension(bean.fileName) == "java") {
-            true
 
-        } else {
-           false
-        }
+
+      if (FilenameUtils.getExtension(bean.fileName) == "java" || bean.fileName == "pom.xml") {
+          true
+
+      } else {
+         false
+      }
     }
 }

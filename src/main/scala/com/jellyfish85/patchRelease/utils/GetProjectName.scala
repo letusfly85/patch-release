@@ -46,4 +46,30 @@ class GetProjectName {
   def removeDuplicates[A](xs: List[A]): List[A] =
     if (xs.isEmpty) xs
     else xs.head :: removeDuplicates(xs.tail filter (x => x != xs.head))
+
+
+  def getRootNames: util.ArrayList[String] = {
+    val list: util.ArrayList[String] = new util.ArrayList[String]()
+
+    try {
+      val inputStream: InputStream = getClass().getResourceAsStream("/projectnames.properties")
+
+      val reader: BufferedReader =
+        new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))
+
+      var switch: Boolean = true
+      var content: String = ""
+      while (switch) {
+        content = reader.readLine()
+        if (content.eq(null)) {
+          switch = false
+
+        } else {
+          list.add(content)
+        }
+      }
+    }
+
+    list
+  }
 }
