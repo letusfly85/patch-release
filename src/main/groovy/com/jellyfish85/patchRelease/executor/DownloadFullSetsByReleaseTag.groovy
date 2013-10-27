@@ -7,6 +7,7 @@ import com.jellyfish85.svnaccessor.bean.SVNRequestBean
 import com.jellyfish85.svnaccessor.getter.SVNGetFiles
 import com.jellyfish85.svnaccessor.manager.SVNManager
 import org.apache.commons.io.FileUtils
+import org.tmatesoft.svn.core.io.SVNRepository
 
 class DownloadFullSetsByReleaseTag {
 
@@ -30,8 +31,8 @@ class DownloadFullSetsByReleaseTag {
         }
 
         def svn = new SVNManager()
-        def repository = svn.repository()
-        def filter = new SimpleJavaFilter()
+        SVNRepository repository = svn.repository()
+        SimpleJavaFilter filter = new SimpleJavaFilter()
 
         def list = pjNmGetter.rootNames
         list.each {String projectName ->
