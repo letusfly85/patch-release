@@ -41,7 +41,8 @@ class DownloadFullSetsByReleaseTag {
             bean0.setPath(app.releaseTag() + app.appPrefix() + projectName + "/pom.xml")
             bean0.setFileName("pom.xml")
 
-            getter.simpleGetFile(bean0, buildHome, "/JYB/tags/JT_RELEASE/src/APP")
+            def removePath = app.releaseTag() + app.appPrefix()
+            getter.simpleGetFile(bean0, buildHome, removePath)
 
             //bean0.setPath(app.releaseTag() + app.appPrefix() + projectName)
             //getter.simpleGetFilesRecursiveWithRemovePath(repository, buildHome.path, bean0.path(),1.toInteger(), filter,  "/JYB/tags/JT_RELEASE/src/APP")
