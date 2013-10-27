@@ -34,14 +34,13 @@ class DownloadFullSetsByReleaseTag {
         SVNRepository repository = svn.repository()
         SimpleJavaFilter filter = new SimpleJavaFilter()
 
+        def removePath = app.releaseTag() + app.appPrefix()
         def list = pjNmGetter.rootNames
         list.each {String projectName ->
             def bean0 = new SVNRequestBean()
 
             bean0.setPath(app.releaseTag() + app.appPrefix() + projectName + "/pom.xml")
             bean0.setFileName("pom.xml")
-
-            def removePath = app.releaseTag() + app.appPrefix()
             getter.simpleGetFile(bean0, buildHome, removePath)
 
             bean0.setPath(app.releaseTag() + app.appPrefix() + projectName)
