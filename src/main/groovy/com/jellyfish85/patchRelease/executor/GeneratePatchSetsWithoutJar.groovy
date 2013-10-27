@@ -51,7 +51,7 @@ class GeneratePatchSetsWithoutJar {
      * @todo
      * @param bean
      */
-    def attachSources(VChangesetsBean bean) {
+    def attachBLSources(VChangesetsBean bean) {
 
         def ext = FilenameUtils.getExtension(bean.pathAttr().value())
         switch (ext) {
@@ -67,6 +67,18 @@ class GeneratePatchSetsWithoutJar {
                 //TODO
                 assert 1 == 1;
 
+        }
+    }
+
+    /**
+     *
+     * @todo
+     * @param bean
+     */
+    def attachCLSources(VChangesetsBean bean) {
+
+        def ext = FilenameUtils.getExtension(bean.pathAttr().value())
+        switch (ext) {
             case "page":
                 //TODO
                 assert 1 == 1;
@@ -82,7 +94,18 @@ class GeneratePatchSetsWithoutJar {
             case "xml":
                 //TODO
                 assert 1 == 1;
+        }
+    }
 
+    /**
+     *
+     * @todo
+     * @param bean
+     */
+    def attachJOBSources(VChangesetsBean bean) {
+
+        def ext = FilenameUtils.getExtension(bean.pathAttr().value())
+        switch (ext) {
             case "ctl":
                 //TODO
                 assert 1 == 1;
