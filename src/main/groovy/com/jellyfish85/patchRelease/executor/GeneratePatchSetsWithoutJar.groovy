@@ -8,8 +8,15 @@ import com.jellyfish85.patchRelease.utils.GenerateReleaseHome
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 
+/**
+ *
+ */
 class GeneratePatchSetsWithoutJar {
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         def ticketNumber = args[0].toLong()
         println(args[0])
@@ -24,95 +31,132 @@ class GeneratePatchSetsWithoutJar {
         directoryGenerator.setup()
 
         def app = new ApplicationProperties()
-        def sourceList = dao.convert(list).findAll {VChangesetsBean v ->
+        dao.convert(list).each {VChangesetsBean bean ->
+        }
+        VChangesetsBean[] sourceList = dao.convert(list).findAll {VChangesetsBean v ->
             (
                 FilenameUtils.getExtension(v.fileNameAttr().value()) != "java"
             ) && (
-                v.fileNameAttr().value().matches(".*" + app.appPrefix() + ".*")
+                v.pathAttr().value().matches(".*" + app.appPrefix() + ".*")
             )
         }
 
         attachSources(sourceList)
     }
 
-    def attachSources(ArrayList<VChangesetsBean> list) {
+    /**
+     *
+     * @param list
+     */
+    public static void attachSources(VChangesetsBean[] list) {
         def app = new ApplicationProperties()
 
         def blList = list.findAll {VChangesetsBean v ->
-            v.fileNameAttr().value().matches(".*" + app.blHead() + ".*")
+            (v.pathAttr().value().matches(".*" + app.blHead() + ".*")) ||
+            (v.pathAttr().value().matches(".*" + app.blCore() + ".*"))
         }
         attachBLSources(blList, app)
 
-        /*def clWebList = list.findAll {VChangesetsBean v ->
-            v.fileNameAttr().value().matches(".*" + app.clWebHome() + ".*")
+        def clWebList = list.findAll {VChangesetsBean v ->
+            v.pathAttr().value().matches(".*" + app.clWebHome() + ".*")
         }
+        println(list.size())
+        attachCLSources(clWebList, app)
 
         def jobEnvList = list.findAll {VChangesetsBean v ->
-            v.fileNameAttr().value().matches(".*" + app.jobEnvHome() + ".*")
-        } */
+            v.pathAttr().value().matches(".*" + app.jobEnvHome() + ".*")
+        }
+        attachJOBSources(jobEnvList, app)
 
     }
 
     /**
      *
-     * @todo
-     * @param bean
+     * @param list
+     * @param app
+     * @return
      */
-    def attachBLSources(ArrayList<VChangesetsBean> list, ApplicationProperties app) {
+    public static attachBLSources(ArrayList<VChangesetsBean> list, ApplicationProperties app) {
         def mwHome = new File(app.releaseHome(), app.mwHome())
 
         def removePathHead = app.trunk() + app.blHead()
         def removePathBody = app.blBasePath()
-        def removePath = "(" + removePathHead + ")([A-Z_]+)(" + removePathBody + ")"
+
+        def blRemovePath  = "(" + removePathHead + "/)([A-Z_]+)(" + removePathBody + ")"
+        def xqlRemovePath = "(" + removePathHead + "/)([A-Z_]+)(" + removePathBody + ")"
+        def xlsRemovePath = "(" + app.trunk() + ")(" + app.blCore() + ")"
 
         list.each {VChangesetsBean bean ->
-            println(bean.pathAttr().value())
 
             def ext = FilenameUtils.getExtension(bean.pathAttr().value())
             def src = new File(app.workspace(), bean.pathAttr().value())
 
-            switch (ext) {
-                case "bl":
-
-                    def dist = new File(mwHome.getPath(), src.getPath().replaceAll(removePath, ""))
-                    println(dist)
+            if (ext == "bl") {
+                    def dist = new File(mwHome.getPath(), bean.pathAttr().value().replaceAll(blRemovePath, "").replace(app.workspace(),""))
+                    println(ext + "\t" + blRemovePath  + "\t" + dist)
                     FileUtils.copyFile(src, dist)
 
-                case "xql":
-                    //TODO
-                    assert 1 == 1;
+            } else if (ext == "xql") {
+                    def dist = new File(mwHome.getPath(), bean.pathAttr().value().replaceAll(xqlRemovePath, "").replace(app.workspace(),""))
+                    println(ext + "\t" + xqlRemovePath  + "\t" + dist)
+                    FileUtils.copyFile(src, dist)
 
-                case "xls":
-                    //TODO
-                    assert 1 == 1;
+            } else if (ext == "xls") {
+                    def dist = new File(mwHome.getPath(), bean.pathAttr().value().replaceAll(xlsRemovePath, "").replace(app.workspace(),""))
+                    println(ext + "\t" + xlsRemovePath  + "\t" + dist)
+                    FileUtils.copyFile(src, dist)
+
+            } else {
+                    print("other extension .. ")
+                    println(src)
+
             }
         }
     }
 
     /**
      *
-     * @todo
-     * @param bean
+     * @param list
+     * @param app
+     * @return
      */
-    def attachCLSources(VChangesetsBean bean) {
+    public static attachCLSources(ArrayList<VChangesetsBean> list, ApplicationProperties app) {
+        def clHome = new File(app.releaseHome(), app.webHome())
 
-        def ext = FilenameUtils.getExtension(bean.pathAttr().value())
-        switch (ext) {
-            case "page":
-                //TODO
-                assert 1 == 1;
+        def removePathHead = app.trunk() + app.clWebHome()
 
-            case "js":
-                //TODO
-                assert 1 == 1;
+        def webRemovePath  = "(" + removePathHead + ")(" + app.webAppPath() + ")"
+        list.each {VChangesetsBean bean ->
 
-            case "lyt":
-                //TODO
-                assert 1 == 1;
+            def ext = FilenameUtils.getExtension(bean.pathAttr().value())
+            def src = new File(app.workspace(), bean.pathAttr().value())
 
-            case "xml":
-                //TODO
-                assert 1 == 1;
+            if (ext == "page") {
+                def dist = new File(clHome.getPath(), bean.pathAttr().value().replaceAll(webRemovePath, "").replace(app.workspace(),""))
+                println(ext + "\t" + webRemovePath  + "\t" + dist)
+                FileUtils.copyFile(src, dist)
+
+            } else if(ext == "js") {
+                def dist = new File(clHome.getPath(), bean.pathAttr().value().replaceAll(webRemovePath, "").replace(app.workspace(),""))
+                println(ext + "\t" + webRemovePath  + "\t" + dist)
+                FileUtils.copyFile(src, dist)
+
+            } else if(ext == "lyt") {
+                def dist = new File(clHome.getPath(), bean.pathAttr().value().replaceAll(webRemovePath, "").replace(app.workspace(),""))
+                println(ext + "\t" + webRemovePath  + "\t" + dist)
+                FileUtils.copyFile(src, dist)
+
+            } else if (ext == "xml") {
+                def dist = new File(clHome.getPath(), bean.pathAttr().value().replaceAll(webRemovePath, "").replace(app.workspace(),""))
+                println(ext + "\t" + webRemovePath  + "\t" + dist)
+                FileUtils.copyFile(src, dist)
+
+            } else {
+                print("other extension .. ")
+                println(src)
+
+            }
+
         }
     }
 
@@ -121,21 +165,23 @@ class GeneratePatchSetsWithoutJar {
      * @todo
      * @param bean
      */
-    def attachJOBSources(VChangesetsBean bean) {
+    public static void attachJOBSources(ArrayList<VChangesetsBean> list, ApplicationProperties app) {
 
-        def ext = FilenameUtils.getExtension(bean.pathAttr().value())
-        switch (ext) {
-            case "ctl":
-                //TODO
-                assert 1 == 1;
+        list.each {VChangesetsBean bean ->
+            def ext = FilenameUtils.getExtension(bean.pathAttr().value())
+            switch (ext) {
+                case "ctl":
+                    //TODO
+                    assert 1 == 1;
 
-            case "sql":
-                //TODO
-                assert 1 == 1;
+                case "sql":
+                    //TODO
+                    assert 1 == 1;
 
-            case "sh":
-                //TODO
-                assert 1 == 1;
+                case "sh":
+                    //TODO
+                    assert 1 == 1;
+            }
         }
     }
 }

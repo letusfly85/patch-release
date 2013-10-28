@@ -88,6 +88,11 @@ object ApplicationProperties {
     properties.getProperty("blHead")
   }
 
+  val blCore: String = {
+    init
+    properties.getProperty("blCore")
+  }
+
   val clWebHome: String = {
     init
     properties.getProperty("clWebHome")
@@ -101,6 +106,11 @@ object ApplicationProperties {
   val releaseHome: String = {
     init
     properties.getProperty("releaseHome")
+  }
+
+  val webAppPath: String = {
+    init
+    properties.getProperty("webAppPath")
   }
 
 }
