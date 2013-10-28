@@ -16,6 +16,11 @@ class GetProjectName {
     }
     FileUtils.forceMkdir(inputFolder)
 
+    val clTargetFileList = new File(inputFolder.getPath, ApplicationProperties.clTargetFileList)
+    val clPw: PrintWriter = new PrintWriter(new BufferedWriter(
+      new OutputStreamWriter(new FileOutputStream(clTargetFileList),"UTF-8")))
+    val replaceCLPath = ApplicationProperties.trunk + ApplicationProperties.clWebHome + "/src/main/java"
+
     var projectNameList: List[String] = List()
     for (i <- 0 to javaList.size()-1) {
       val bean: VChangesetsBean = javaList.get(i)
@@ -25,10 +30,22 @@ class GetProjectName {
       val sixth  = list(6)
 
       fifth match {
-        case "BL"=> projectNameList ::= (fifth + "/" + sixth)
-        case _   => projectNameList ::= fifth
+        case "BL"       =>
+          projectNameList ::= (fifth + "/" + sixth)
+
+        case "CL_WEB"   =>
+          projectNameList ::= fifth
+          clPw.write(bean.pathAttr.value.replace(replaceCLPath, "").replace(".java", ".class"))
+          clPw.write("\n")
+
+        case _          =>
+          projectNameList ::= fifth
+
       }
     }
+    clPw.close()
+
+
 
     val targetFile = new File(inputFolder.getPath, ApplicationProperties.buildTargets)
     val pw: PrintWriter = new PrintWriter(new BufferedWriter(

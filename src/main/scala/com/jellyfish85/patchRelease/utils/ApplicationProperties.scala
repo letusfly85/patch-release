@@ -122,4 +122,9 @@ object ApplicationProperties {
     init
     properties.getProperty("jobShellPath")
   }
+
+  val clTargetFileList: String = {
+    init
+    properties.getProperty("clTargetFileList")
+  }
 }
