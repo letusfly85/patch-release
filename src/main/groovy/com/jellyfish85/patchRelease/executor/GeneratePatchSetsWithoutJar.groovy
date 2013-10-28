@@ -60,7 +60,6 @@ class GeneratePatchSetsWithoutJar {
         def clWebList = list.findAll {VChangesetsBean v ->
             v.pathAttr().value().matches(".*" + app.clWebHome() + ".*")
         }
-        println(list.size())
         attachCLSources(clWebList, app)
 
         def jobEnvList = list.findAll {VChangesetsBean v ->
@@ -92,17 +91,20 @@ class GeneratePatchSetsWithoutJar {
             def src = new File(app.workspace(), bean.pathAttr().value())
 
             if (ext == "bl") {
-                    def dist = new File(mwHome.getPath(), bean.pathAttr().value().replaceAll(blRemovePath, "").replace(app.workspace(),""))
+                    def dist = new File(mwHome.getPath(), bean.pathAttr().value().
+                            replaceAll(blRemovePath, "").replace(app.workspace(),""))
                     println(ext + "\t" + blRemovePath  + "\t" + dist)
                     FileUtils.copyFile(src, dist)
 
             } else if (ext == "xql") {
-                    def dist = new File(mwHome.getPath(), bean.pathAttr().value().replaceAll(xqlRemovePath, "").replace(app.workspace(),""))
+                    def dist = new File(mwHome.getPath(), bean.pathAttr().value().
+                            replaceAll(xqlRemovePath, "").replace(app.workspace(),""))
                     println(ext + "\t" + xqlRemovePath  + "\t" + dist)
                     FileUtils.copyFile(src, dist)
 
             } else if (ext == "xls") {
-                    def dist = new File(mwHome.getPath(), bean.pathAttr().value().replaceAll(xlsRemovePath, "").replace(app.workspace(),""))
+                    def dist = new File(mwHome.getPath(), bean.pathAttr().value().
+                            replaceAll(xlsRemovePath, "").replace(app.workspace(),""))
                     println(ext + "\t" + xlsRemovePath  + "\t" + dist)
                     FileUtils.copyFile(src, dist)
 
@@ -132,22 +134,32 @@ class GeneratePatchSetsWithoutJar {
             def src = new File(app.workspace(), bean.pathAttr().value())
 
             if (ext == "page") {
-                def dist = new File(clHome.getPath(), bean.pathAttr().value().replaceAll(webRemovePath, "").replace(app.workspace(),""))
+                def dist = new File(clHome.getPath(), bean.pathAttr().value().
+                        replaceAll(webRemovePath, "").replace(app.workspace(),""))
                 println(ext + "\t" + webRemovePath  + "\t" + dist)
                 FileUtils.copyFile(src, dist)
 
             } else if(ext == "js") {
-                def dist = new File(clHome.getPath(), bean.pathAttr().value().replaceAll(webRemovePath, "").replace(app.workspace(),""))
+                def dist = new File(clHome.getPath(), bean.pathAttr().value().
+                        replaceAll(webRemovePath, "").replace(app.workspace(),""))
                 println(ext + "\t" + webRemovePath  + "\t" + dist)
                 FileUtils.copyFile(src, dist)
 
             } else if(ext == "lyt") {
-                def dist = new File(clHome.getPath(), bean.pathAttr().value().replaceAll(webRemovePath, "").replace(app.workspace(),""))
+                def dist = new File(clHome.getPath(), bean.pathAttr().value().
+                        replaceAll(webRemovePath, "").replace(app.workspace(),""))
                 println(ext + "\t" + webRemovePath  + "\t" + dist)
                 FileUtils.copyFile(src, dist)
 
             } else if (ext == "xml") {
-                def dist = new File(clHome.getPath(), bean.pathAttr().value().replaceAll(webRemovePath, "").replace(app.workspace(),""))
+                def dist = new File(clHome.getPath(), bean.pathAttr().value().
+                        replaceAll(webRemovePath, "").replace(app.workspace(),""))
+                println(ext + "\t" + webRemovePath  + "\t" + dist)
+                FileUtils.copyFile(src, dist)
+
+            } else if(ext == "jsp") {
+                def dist = new File(clHome.getPath(), bean.pathAttr().value().
+                        replaceAll(webRemovePath, "").replace(app.workspace(),""))
                 println(ext + "\t" + webRemovePath  + "\t" + dist)
                 FileUtils.copyFile(src, dist)
 
@@ -166,21 +178,40 @@ class GeneratePatchSetsWithoutJar {
      * @param bean
      */
     public static void attachJOBSources(ArrayList<VChangesetsBean> list, ApplicationProperties app) {
+        def jobHome = new File(app.releaseHome(), app.jobHome())
+
+        def removePathHead = app.trunk() + app.jobEnvHome()
+
+        def jobBatchRemovePath  = "(" + removePathHead + ")(" + app.jobBatchPath() + ")"
+        def jobShellRemovePath  = "(" + removePathHead + ")(" + app.jobShellPath() + ")"
 
         list.each {VChangesetsBean bean ->
+
             def ext = FilenameUtils.getExtension(bean.pathAttr().value())
-            switch (ext) {
-                case "ctl":
-                    //TODO
-                    assert 1 == 1;
+            def src = new File(app.workspace(), bean.pathAttr().value())
 
-                case "sql":
-                    //TODO
-                    assert 1 == 1;
+            if (ext =="ctl") {
+                    def dist = new File(jobHome.getPath(), bean.pathAttr().value().
+                            replaceAll(jobBatchRemovePath, "").replace(app.workspace(),""))
+                    println(ext + "\t" + jobBatchRemovePath  + "\t" + dist)
+                    FileUtils.copyFile(src, dist)
 
-                case "sh":
-                    //TODO
-                    assert 1 == 1;
+            } else if (ext == "sql") {
+                    def dist = new File(jobHome.getPath(), bean.pathAttr().value().
+                            replaceAll(jobBatchRemovePath, "").replace(app.workspace(),""))
+                    println(ext + "\t" + jobBatchRemovePath  + "\t" + dist)
+                    FileUtils.copyFile(src, dist)
+
+            } else if (ext == "sh") {
+                    def dist = new File(jobHome.getPath() + "/script", bean.pathAttr().value().
+                            replaceAll(jobShellRemovePath, "").replace(app.workspace(),""))
+                    println(ext + "\t" + jobShellRemovePath  + "\t" + dist)
+                    FileUtils.copyFile(src, dist)
+
+            } else {
+                print("other extension .. ")
+                println(src)
+
             }
         }
     }

@@ -113,4 +113,13 @@ object ApplicationProperties {
     properties.getProperty("webAppPath")
   }
 
+  val jobBatchPath: String = {
+    init
+    properties.getProperty("jobBatchPath")
+  }
+
+  val jobShellPath: String = {
+    init
+    properties.getProperty("jobShellPath")
+  }
 }
