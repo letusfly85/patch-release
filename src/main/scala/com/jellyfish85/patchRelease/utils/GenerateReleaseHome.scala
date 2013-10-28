@@ -5,12 +5,11 @@ import org.apache.commons.io.FileUtils
 
 class GenerateReleaseHome {
 
-  val app = new ApplicationProperties
 
-  val releaseHome: File = new File(app.releaseHome)
-  val webHome:     File = new File(app.relesaseHome, app.webHome)
-  val jobHome:     File = new File(app.relesaseHome, app.jobHome)
-  val mwHome:      File = new File(app.relesaseHome, app.mwHome)
+  val releaseHome: File = new File(ApplicationProperties.releaseHome)
+  val webHome:     File = new File(ApplicationProperties.releaseHome, ApplicationProperties.webHome)
+  val jobHome:     File = new File(ApplicationProperties.releaseHome, ApplicationProperties.jobHome)
+  val mwHome:      File = new File(ApplicationProperties.releaseHome, ApplicationProperties.mwHome)
 
   def cleanup() {
       FileUtils.forceDeleteOnExit(releaseHome)

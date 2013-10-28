@@ -5,6 +5,7 @@ import com.jellyfish85.dbaccessor.dao.src.mainte.tool.VChangesetsDao
 import com.jellyfish85.dbaccessor.manager.DatabaseManager
 import com.jellyfish85.patchRelease.utils.ApplicationProperties
 import com.jellyfish85.patchRelease.utils.GenerateReleaseHome
+import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 
 class GeneratePatchSetsWithoutJar {
@@ -40,15 +41,15 @@ class GeneratePatchSetsWithoutJar {
         def blList = list.findAll {VChangesetsBean v ->
             v.fileNameAttr().value().matches(".*" + app.blHead() + ".*")
         }
-        attachBLSources(blList)
+        attachBLSources(blList, app)
 
-        def clWebList = list.findAll {VChangesetsBean v ->
+        /*def clWebList = list.findAll {VChangesetsBean v ->
             v.fileNameAttr().value().matches(".*" + app.clWebHome() + ".*")
         }
 
         def jobEnvList = list.findAll {VChangesetsBean v ->
             v.fileNameAttr().value().matches(".*" + app.jobEnvHome() + ".*")
-        }
+        } */
 
     }
 
@@ -57,14 +58,25 @@ class GeneratePatchSetsWithoutJar {
      * @todo
      * @param bean
      */
-    def attachBLSources(ArrayList<VChangesetsBean> list) {
+    def attachBLSources(ArrayList<VChangesetsBean> list, ApplicationProperties app) {
+        def mwHome = new File(app.releaseHome(), app.mwHome())
+
+        def removePathHead = app.trunk() + app.blHead()
+        def removePathBody = app.blBasePath()
+        def removePath = "(" + removePathHead + ")([A-Z_]+)(" + removePathBody + ")"
 
         list.each {VChangesetsBean bean ->
+            println(bean.pathAttr().value())
+
             def ext = FilenameUtils.getExtension(bean.pathAttr().value())
+            def src = new File(app.workspace(), bean.pathAttr().value())
+
             switch (ext) {
                 case "bl":
-                    //TODO
-                    assert 1 == 1;
+
+                    def dist = new File(mwHome.getPath(), src.getPath().replaceAll(removePath, ""))
+                    println(dist)
+                    FileUtils.copyFile(src, dist)
 
                 case "xql":
                     //TODO
