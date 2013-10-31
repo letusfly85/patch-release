@@ -35,11 +35,11 @@ class DownloadFullSetsByReleaseTag {
         list.each {String projectName ->
             def bean0 = new SVNRequestBean()
 
-            bean0.setPath(app.releaseTag() + app.appPrefix() + projectName + "/pom.xml")
+            bean0.setPath(app.releaseTag() + app.appPrefix() + "/" + projectName + "/pom.xml")
             bean0.setFileName("pom.xml")
             getter.simpleGetFile(bean0, buildHome, removePath)
 
-            bean0.setPath(app.releaseTag() + app.appPrefix() + projectName)
+            bean0.setPath(app.releaseTag() + app.appPrefix() + "/" + projectName)
             getter.simpleGetFilesRecursive(
                     buildHome.path.toString(),
                     bean0.path().toString(),
